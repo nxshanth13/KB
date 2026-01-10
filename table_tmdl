@@ -1,0 +1,31 @@
+table <TABLE_NAME>
+    lineageTag: <TABLE_LINEAGE_GUID>
+
+    measure <MEASURE_NAME> = <DAX_EXPRESSION>
+        formatString: <FORMAT>
+        lineageTag: <MEASURE_GUID>
+
+    column <COLUMN_NAME>
+        dataType: <DATA_TYPE>
+        summarizeBy: <SUMMARIZATION>
+        isKey: <true/false if applicable>
+        formatString: <FORMAT if applicable>
+        sourceColumn: <SOURCE_COLUMN_NAME>
+
+        annotation SummarizationSetBy = Automatic
+        annotation PBI_FormatHint = <if any>
+        annotation UnderlyingDateTimeDataType = <if any>
+
+    partition <TABLE_NAME> = m
+        mode: import
+        source =
+            let
+                Source = Snowflake.Databases("<ACCOUNT>","<WAREHOUSE>",[Implementation="2.0"]),
+                Database = Source{[Name="<DATABASE>",Kind="Database"]}[Data],
+                Schema = Database{[Name="<SCHEMA>",Kind="Schema"]}[Data],
+                Table = Schema{[Name="<TABLE_NAME>",Kind="Table"]}[Data]
+            in
+                Table
+
+    annotation PBI_NavigationStepName = Navigation
+    annotation PBI_ResultType = Table
