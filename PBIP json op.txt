@@ -1,0 +1,125 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "<VISUAL_ID>",
+  "position": {
+    "x": 0,
+    "y": 0,
+    "z": 1000,
+    "height": 300,
+    "width": 500,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "<VISUAL_TYPE>", 
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "<TABLE_NAME>"
+                    }
+                  },
+                  "Property": "<CATEGORY_COLUMN>"
+                }
+              },
+              "queryRef": "<TABLE_NAME>.<CATEGORY_COLUMN>",
+              "nativeQueryRef": "<CATEGORY_COLUMN>",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "<SERIES_TABLE>"
+                    }
+                  },
+                  "Property": "<SERIES_COLUMN>"
+                }
+              },
+              "queryRef": "<SERIES_TABLE>.<SERIES_COLUMN>",
+              "nativeQueryRef": "<SERIES_COLUMN>"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "<FACT_TABLE>"
+                    }
+                  },
+                  "Property": "<MEASURE_NAME>"
+                }
+              },
+              "queryRef": "<FACT_TABLE>.<MEASURE_NAME>",
+              "nativeQueryRef": "<MEASURE_NAME>"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "<FACT_TABLE>"
+                  }
+                },
+                "Property": "<MEASURE_NAME>"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "<FILTER_ID_1>",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "<DIM_TABLE>"
+              }
+            },
+            "Property": "<FILTER_COLUMN_1>"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "<FILTER_ID_2>",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "<FACT_TABLE>"
+              }
+            },
+            "Property": "<MEASURE_NAME>"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}
