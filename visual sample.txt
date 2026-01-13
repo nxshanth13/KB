@@ -1,0 +1,244 @@
+Data Model & Relationships (Power BI Star Schema)
+Tables
+
+FACT_MEETING_ACTIVITY
+
+FACT_FEATURE_USAGE
+
+DIM_USER
+
+DIM_MEETING
+
+DIM_FEATURE
+
+DIM_DATE
+
+Relationships (Single Direction, Many-to-One)
+
+FACT_MEETING_ACTIVITY[USER_KEY] → DIM_USER[USER_KEY]
+
+FACT_MEETING_ACTIVITY[MEETING_KEY] → DIM_MEETING[MEETING_KEY]
+
+FACT_MEETING_ACTIVITY[DATE_KEY] → DIM_DATE[DATE_KEY]
+
+FACT_FEATURE_USAGE[FEATURE_KEY] → DIM_FEATURE[FEATURE_KEY]
+
+FACT_FEATURE_USAGE[USER_KEY] → DIM_USER[USER_KEY]
+
+FACT_FEATURE_USAGE[DATE_KEY] → DIM_DATE[DATE_KEY]
+
+1. Visuals in Power BI
+Visual 1: Total Number of Users (KPI Card)
+
+Visual: Card
+Measure (DAX):
+
+Total Users = DISTINCTCOUNT(DIM_USER[USER_KEY])
+
+
+Slicers:
+
+DIM_DATE[Date]
+
+DIM_USER[Plan Type]
+
+DIM_USER[Region]
+
+Visual 2: Average Meeting Duration by Type & Category
+
+Visual: Clustered Bar Chart (Horizontal)
+Axis: DIM_MEETING[MEETING_TYPE]
+Legend: DIM_MEETING[MEETING_CATEGORY]
+Values:
+
+Avg Duration (Minutes) = AVERAGE(FACT_MEETING_ACTIVITY[DURATION_MINUTES])
+Avg Duration (Hours) = DIVIDE([Avg Duration (Minutes)], 60)
+
+
+Drilldown: Meeting Type → Category
+Tooltip: Participant Count (Distinct Users per Meeting)
+
+Visual 3: Users by Meeting Topic (Treemap)
+
+Visual: Treemap
+Group: FACT_MEETING_ACTIVITY[MEETING_TOPIC]
+Values:
+
+Users per Topic = DISTINCTCOUNT(FACT_MEETING_ACTIVITY[USER_KEY])
+
+
+Ranking:
+
+Topic Rank = 
+RANKX(
+    ALL(FACT_MEETING_ACTIVITY[MEETING_TOPIC]),
+    [Users per Topic],
+    ,
+    DESC
+)
+
+
+Top N controlled via What-If Parameter.
+
+Visual 4: Meetings per User
+
+Visual: Bar Chart
+Axis: DIM_USER[USER_NAME]
+Values:
+
+Meetings per User = DISTINCTCOUNT(FACT_MEETING_ACTIVITY[MEETING_ACTIVITY_ID])
+
+
+Engagement Classification:
+
+User Engagement Level =
+SWITCH(
+    TRUE(),
+    [Meetings per User] >= 20, "High",
+    [Meetings per User] >= 10, "Medium",
+    "Low"
+)
+
+
+Used as legend or slicer.
+
+Visual 5: Feature Usage Distribution
+
+Visual: Pie Chart + Table
+
+Measures:
+
+Total Feature Usage = SUM(FACT_FEATURE_USAGE[USAGE_COUNT])
+
+Usage % =
+DIVIDE(
+    [Total Feature Usage],
+    CALCULATE([Total Feature Usage], ALL(DIM_FEATURE))
+)
+
+Feature Adoption Rate =
+DIVIDE(
+    DISTINCTCOUNT(FACT_FEATURE_USAGE[USER_KEY]),
+    CALCULATE(DISTINCTCOUNT(FACT_FEATURE_USAGE[USER_KEY]), ALL(DIM_FEATURE))
+)
+
+
+Toggle using Field Parameters (Usage Count vs Adoption Rate).
+
+Visual 6: Meeting Trends Over Time (Dual Axis)
+
+Visual: Line Chart with Secondary Axis
+
+Daily Meeting Count = DISTINCTCOUNT(FACT_MEETING_ACTIVITY[MEETING_ACTIVITY_ID])
+Daily Avg Duration = AVERAGE(FACT_MEETING_ACTIVITY[DURATION_MINUTES])
+
+7 Day Moving Avg =
+AVERAGEX(
+    DATESINPERIOD(DIM_DATE[Date], MAX(DIM_DATE[Date]), -7, DAY),
+    [Daily Avg Duration]
+)
+
+
+Date Granularity via Field Parameter: Day / Week / Month.
+
+Visual 7: User Engagement Heatmap
+
+Visual: Matrix with Conditional Formatting
+Rows: DIM_DATE[Day Name]
+Columns: Hour
+Values:
+
+Meeting Intensity = COUNT(FACT_MEETING_ACTIVITY[MEETING_ACTIVITY_ID])
+
+
+Peak Flag:
+
+Peak Usage =
+IF(
+    [Meeting Intensity] >=
+    PERCENTILEX.INC(
+        ALL(FACT_MEETING_ACTIVITY),
+        [Meeting Intensity],
+        0.8
+    ),
+    "Peak",
+    "Normal"
+)
+
+
+Color scale via conditional formatting.
+
+Dashboard Layout in Power BI
+Row	Visuals
+Top	KPI Cards (Users, Meetings, Avg Duration, Adoption Rate)
+2	Meeting Trends (Full Width Line Chart)
+3	Avg Duration Bar (Left) + Feature Usage Pie (Right)
+4	Heatmap (Left) + Top Users Bar (Right)
+5	Treemap – Meeting Topics
+Power BI Features Mapping
+Tableau Concept	Power BI Equivalent
+LOD Expressions	CALCULATE + ALLEXCEPT
+Parameters	What-If Parameters / Field Parameters
+Actions	Edit Interactions + Drillthrough
+Extracts	Import Mode + Incremental Refresh
+Context Filters	Report/Page Level Filters
+Highlight Table	Matrix + Conditional Formatting
+Dual Axis	Line + Secondary Y-axis
+Performance Optimization (Power BI)
+
+Enable Incremental Refresh on FACT tables (Date-based)
+
+Use Import Mode for < 50M rows, Composite if larger
+
+Star schema only (no bi-directional unless needed)
+
+Hide surrogate keys
+
+Pre-aggregate durations and counts in SQL if possible
+
+Use Top N filters with slicer-driven parameters
+
+Color & Theme
+
+Apply Power BI Theme JSON:
+
+Primary: #2D8CFF
+
+Secondary: #4A90E2, #7B68EE, #B0C4DE
+
+Accent: #FF6B35
+
+Positive: #28A745
+
+Negative: #DC3545
+
+Interactivity in Power BI
+Feature	Implementation
+Date Filter	Relative Date Slicer
+Region / Plan	Hierarchical Slicer
+Top N	What-If Parameter
+Drilldown	Native Drill Mode
+Drillthrough	User Detail Page
+Cross-filter	Edit Interactions
+Tooltips	Report Page Tooltips
+Success Metrics (Power BI Service)
+
+Load time < 10s (Performance Analyzer)
+
+Usage metrics report > 100 MAU
+
+Q&A visual enabled for self-service
+
+Endorse dataset (Certified)
+
+Maintenance
+
+Incremental refresh daily
+
+Dataset size monitoring
+
+Monthly performance analyzer review
+
+Quarterly UX review
+
+Deployment Pipelines (Dev → Test → Prod)
