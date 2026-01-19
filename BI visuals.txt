@@ -1,0 +1,55 @@
+Stacked Bar Chart
+
+Clustered Bar Chart
+
+100% Stacked Bar Chart
+
+Stacked Column Chart
+
+Clustered Column Chart
+
+100% Stacked Column Chart
+
+Line Chart
+
+Area Chart
+
+Stacked Area Chart
+
+Line and Stacked Column Chart
+
+Line and Clustered Column Chart
+
+100% Stacked area Chart
+
+Ribbon Chart
+
+Waterfall chart
+
+Funnel
+
+Scatter Chart
+
+Pie chart
+
+Donut chart
+
+Treemap
+
+Map
+
+Filled Maps
+
+Azure maps
+
+Gauge 
+
+Card
+
+KPI
+
+Slicer
+
+Table 
+
+Matrix
