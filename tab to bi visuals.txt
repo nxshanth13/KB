@@ -1,0 +1,40 @@
+Tableau Chart ---> Feature	Power BI Visual 
+Text Table		Table
+Crosstab		Matrix
+Highlight Table		Table / Matrix + Conditional Formatting
+Bar Chart		Clustered Column / Clustered Bar
+Stacked Bar		Stacked Column / Stacked Bar
+Side-by-Side Bar	Clustered Column
+Line Chart		Line Chart
+Dual Line		Line Chart (Secondary Axis)
+Area Chart		Area Chart
+Stacked Area		Stacked Area Chart
+Pie Chart		Pie Chart
+Donut Chart		Donut Chart
+Histogram		Histogram (built-in or custom visual)
+Box Plot		Box & Whisker (custom visual)
+Bullet Chart		Bullet (custom visual)
+Gantt Chart		Gantt (custom visual)
+Pareto Chart		Line & Clustered Column Combo
+Waterfall		Waterfall Chart
+Scatter Plot		Scatter Chart
+Bubble Chart		Scatter Chart (Size = Measure)
+Packed Bubbles		Packed Bubble (custom visual)
+Treemap				Treemap
+Heat Map		Matrix/Table + Conditional Formatting
+Tree Diagram		Decomposition Tree
+Sunburst		Sunburst (custom visual)
+Symbol Map		Map
+Filled Map		Filled Map
+Density Map		Azure Maps (Heat layer)
+Geographic Heat Map	Azure Maps
+Choropleth Map		Filled Map
+Custom Mapbox Map	Azure Maps / Shape Map
+Dual Axis		Combo Chart / Secondary Axis
+Reference Line		Analytics → Constant Line
+Trend Line		Analytics → Trend Line
+Forecast		Analytics → Forecast
+Clusters		AI → Clustering
+Parameters		What-If Parameters
+Sets			Filters / DAX Calculated Tables
+Calculated Fields	DAX Measures / Calculated Columns
