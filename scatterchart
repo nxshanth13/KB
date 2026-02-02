@@ -1,0 +1,154 @@
+Scatter Chart — Power BI PBIP Rule
+🔁 Repeatable rule (bookmark this)
+visualType = scatterChart
+Measure    = X               // horizontal value
+Measure    = Y               // vertical value
+Details    = required*       // splits data into multiple points
+Legend     = optional        // color grouping
+Size       = optional        // bubble size
+Measures   must be real DAX measures
+nativeQueryRef should be present
+
+
+⚠️ Without Details or Legend, the scatter will collapse into ONE dot.
+
+
+
+
+Syntax:
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "<VISUAL_CONTAINER_ID>",
+  "position": {
+    "x": <X_POSITION>,
+    "y": <Y_POSITION>,
+    "z": <Z_INDEX>,
+    "height": <HEIGHT>,
+    "width": <WIDTH>,
+    "tabOrder": <TAB_ORDER>
+  },
+  "visual": {
+    "visualType": "scatterChart",
+    "query": {
+      "queryState": {
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "<DATASET_NAME>"
+                    }
+                  },
+                  "Property": "<SERIES_FIELD>"
+                }
+              },
+              "queryRef": "<DATASET_NAME>.<SERIES_FIELD>",
+              "nativeQueryRef": "<SERIES_FIELD>"
+            }
+          ]
+        },
+        "X": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "<DATASET_NAME>"
+                    }
+                  },
+                  "Property": "<X_MEASURE>"
+                }
+              },
+              "queryRef": "<DATASET_NAME>.<X_MEASURE>",
+              "nativeQueryRef": "<X_MEASURE>",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "<DATASET_NAME>"
+                    }
+                  },
+                  "Property": "<Y_MEASURE>"
+                }
+              },
+              "queryRef": "<DATASET_NAME>.<Y_MEASURE>",
+              "nativeQueryRef": "<Y_MEASURE>"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'<VISUAL_TITLE>'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "<FILTER_ID_1>",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "<DATASET_NAME>"
+              }
+            },
+            "Property": "<X_MEASURE>"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "<FILTER_ID_2>",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "<DATASET_NAME>"
+              }
+            },
+            "Property": "<Y_MEASURE>"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "<FILTER_ID_3>",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "<DATASET_NAME>"
+              }
+            },
+            "Property": "<SERIES_FIELD>"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}
