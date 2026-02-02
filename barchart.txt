@@ -1,0 +1,165 @@
+Repeatable rule (bookmark this)
+visualType = barChart
+Category   = Category        // labels on Y-axis
+Measure    = X               // values (length of bars)
+Series     = optional        // for clustered / stacked bars
+Measure    must be a real DAX measure
+nativeQueryRef should be present
+
+
+
+Syntax:
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "<VISUAL_CONTAINER_ID>",
+  "position": {
+    "x": <X_POSITION>,
+    "y": <Y_POSITION>,
+    "z": <Z_INDEX>,
+    "height": <HEIGHT>,
+    "width": <WIDTH>,
+    "tabOrder": <TAB_ORDER>
+  },
+  "visual": {
+    "visualType": "barchart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "<DATASET_NAME>"
+                    }
+                  },
+                  "Property": "<CATEGORY_FIELD>"
+                }
+              },
+              "queryRef": "<DATASET_NAME>.<CATEGORY_FIELD>",
+              "nativeQueryRef": "<CATEGORY_FIELD>",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "<DATASET_NAME>"
+                    }
+                  },
+                  "Property": "<SERIES_FIELD>"
+                }
+              },
+              "queryRef": "<DATASET_NAME>.<SERIES_FIELD>",
+              "nativeQueryRef": "<SERIES_FIELD>"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "<DATASET_NAME>"
+                    }
+                  },
+                  "Property": "<MEASURE_NAME>"
+                }
+              },
+              "queryRef": "<DATASET_NAME>.<MEASURE_NAME>",
+              "nativeQueryRef": "<MEASURE_NAME>"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "<DATASET_NAME>"
+                  }
+                },
+                "Property": "<MEASURE_NAME>"
+              }
+            },
+            "direction": "<SORT_DIRECTION>"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'<VISUAL_TITLE>'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "<FILTER_ID_1>",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "<DATASET_NAME>"
+              }
+            },
+            "Property": "<FILTER_FIELD_1>"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "<FILTER_ID_2>",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "<DATASET_NAME>"
+              }
+            },
+            "Property": "<FILTER_FIELD_2>"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "<FILTER_ID_3>",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "<DATASET_NAME>"
+              }
+            },
+            "Property": "<MEASURE_NAME>"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}
